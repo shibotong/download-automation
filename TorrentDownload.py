@@ -35,7 +35,6 @@ class TorrentDownload():
             os.makedirs(seriesName)
 
         torrentLink = self.getDownloadLink(seriesLink, rules, currentDownload)
-        print(torrentLink)
         if torrentLink is not None:
             torrentPath = self.downloadTorrent(torrentLink, seriesName, currentDownload)
             return torrentPath
@@ -46,7 +45,6 @@ class TorrentDownload():
         try:
             r = requests.get(url, headers=header)
             r.raise_for_status()
-            # print(r.request.headers)
             return r.text
         except:
             print("worm failed")
@@ -87,14 +85,3 @@ class TorrentDownload():
 
             print('torrent Download successful: ', filename)
             return filepath + filename
-
-
-
-
-
-
-
-
-
-
-

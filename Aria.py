@@ -14,5 +14,6 @@ def addTorrentToAria2(pathOfTorrent):
     try:
         download = aria2.add_torrent(pathOfTorrent)
         print("added to aria2 " + pathOfTorrent)
+        return download
     except Exception as e:
         raise e
