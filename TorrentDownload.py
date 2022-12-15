@@ -79,7 +79,9 @@ class TorrentDownload():
         r = requests.get(link, stream=True)
         if r.status_code == 200:
             r.raw.decode_content = True
-            filepath = "./downloads/Torrents/" + name + '/'
+            filepath = "/downloads/Torrents/" + name + '/'
+            if os.path.exists(filepath) == False:
+                os.mkdir(filepath)
             with open(filepath + filename, 'wb') as f:
                 shutil.copyfileobj(r.raw, f)
 

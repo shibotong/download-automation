@@ -1,6 +1,6 @@
 import TorrentDownload
 from AutoDownloads import AutoDownloads
-from utility import downloadRuleURL, DownloadError
+from utility import downloadRuleURL, DownloadError, period
 from datetime import date
 import Aria
 import json
@@ -26,8 +26,9 @@ def main(sc):
             number = 0
             if 'number' in item:
                 number = item['number']
+            icon = item['icon']
             
-            downloadItem = AutoDownloads(name, season, series, number, download)
+            downloadItem = AutoDownloads(name, season, series, number, download, icon)
             downloadItems.append(downloadItem)
             item['series'] += 1
             if 'number' in item:
@@ -39,7 +40,7 @@ def main(sc):
         json.dump(seriesItem, outfile)
 
     checkDownloads()
-    sc.enter(60 * 60 * 24, 1, main, (sc, ))
+    sc.enter(period, 1, main, (sc, ))
 
 def checkDownloads():
     for downloadItem in downloadItems:
