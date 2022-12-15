@@ -32,7 +32,7 @@ class AutoDownloads():
                 server = 'https://api.day.app/'
                 endpoint = server + token
                 title = self.name
-                description = "Season " + str(self.season) + " Episode " + str(self.series) + "Added to Library"
+                description = "Season " + str(self.season) + " Episode " + str(self.series) + " added to library"
                 # parameter = {'pushkey': token, 'text': fileName + ' Added to Library'}
                 url = endpoint + '/' + title + '/' + description
                 parameter = {'icon': self.icon}
