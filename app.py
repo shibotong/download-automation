@@ -1,6 +1,6 @@
 import TorrentDownload
 from AutoDownloads import AutoDownloads
-from utility import downloadRuleURL, DownloadError, period
+from utility import downloadRuleURL, period
 from datetime import date
 import Aria
 import json
@@ -14,12 +14,12 @@ downloadItems = []
 def main(sc):
     downloadFile = open(downloadRuleURL)
     seriesItem = json.load(downloadFile)
-    print('-------' + str(date.today()) + '--------')
     for item in seriesItem:
-        print(item['name'] + ' ' + str(item['series']))
         try:
             torrentURL = td.downloadSeries(item)
             download = Aria.addTorrentToAria2(torrentURL)
+            print('-------' + str(date.today()) + '--------')
+            print('Add' + item['name'] + ' ' + str(item['series']) + ' to queue')
             name = item['name']
             season = item['season']
             series = item['series']
@@ -33,8 +33,9 @@ def main(sc):
             item['series'] += 1
             if 'number' in item:
                 item['number'] += 1
-        except DownloadError as error:
-            print(error)
+        except Exception as error:
+            # print(error)
+            pass
     downloadFile.close()
     with open(downloadRuleURL, "w") as outfile:
         json.dump(seriesItem, outfile)

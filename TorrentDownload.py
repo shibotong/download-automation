@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import shutil
 import os
-from utility import baseURL, DownloadError
+from utility import baseURL, torrentSavingPath
 
 
 
@@ -36,18 +36,21 @@ class TorrentDownload():
 
         torrentLink = self.getDownloadLink(seriesLink, rules, currentDownload)
         if torrentLink is not None:
-            torrentPath = self.downloadTorrent(torrentLink, seriesName, currentDownload)
-            return torrentPath
+            try:
+                torrentPath = self.downloadTorrent(torrentLink, seriesName, currentDownload)
+                return torrentPath
+            except Exception as e:
+                raise e
         else:
-            raise DownloadError('DownloadError: no download link')
+            raise Exception("no download link")
             
     def getHTML(self, url, header):
         try:
             r = requests.get(url, headers=header)
             r.raise_for_status()
             return r.text
-        except:
-            print("worm failed")
+        except Exception as e:
+            print(e)
             return ""
 
 
@@ -79,11 +82,14 @@ class TorrentDownload():
         r = requests.get(link, stream=True)
         if r.status_code == 200:
             r.raw.decode_content = True
-            filepath = "/downloads/Torrents/" + name + '/'
-            if os.path.exists(filepath) == False:
+            filepath = torrentSavingPath + name + '/'
+            print(filepath)
+            if not os.path.exists(filepath):
                 os.mkdir(filepath)
             with open(filepath + filename, 'wb') as f:
-                shutil.copyfileobj(r.raw, f)
-
-            print('torrent Download successful: ', filename)
-            return filepath + filename
+                try:
+                    shutil.copyfileobj(r.raw, f)
+                    return filepath + filename
+                except Exception as e:
+                    raise e
+            
