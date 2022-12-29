@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import shutil
 import os
-from utility import baseURL, torrentSavingPath
+from utility import baseURL, torrentSavingPath, log
 
 
 
@@ -20,7 +20,6 @@ class TorrentDownload():
             r.raise_for_status()
             return r.text
         except:
-            print("worm failed")
             return ""
 
     def downloadSeries(self, item):
@@ -28,13 +27,15 @@ class TorrentDownload():
         seriesLink = baseURL + item['link']
         currentDownload = item['series']
         rules = item['rule']
-
+        ambiSearch = False
+        if 'ambiSearch' in item:
+            ambiSearch = item['ambiSearch']
         # create a dir if not exist
         filepath = "./" + seriesName + '/'
         if not os.path.exists(filepath):
             os.makedirs(seriesName)
 
-        torrentLink = self.getDownloadLink(seriesLink, rules, currentDownload)
+        torrentLink = self.getDownloadLink(seriesLink, rules, currentDownload, ambiSearch)
         if torrentLink is not None:
             try:
                 torrentPath = self.downloadTorrent(torrentLink, seriesName, currentDownload)
@@ -54,15 +55,30 @@ class TorrentDownload():
             return ""
 
 
-    def getDownloadLink(self, link, rules, series):
+    def getDownloadLink(self, link, rules, series, ambiSearch):
         html = self.getHTML(link, self.header)
         soup = BeautifulSoup(html, "html.parser")
+
+        # Get Link Name
+        seriesStr = str(series)
+        if series < 10:
+            seriesStr = "0" + seriesStr
+        linkName = rules[0] + seriesStr + rules[1]
+        log(linkName)
+
         for i in soup.find_all('div', {'class': 'attachlist'}):
             links = i('a')
             for link in links:
                 linkText = link.get_text()
-                if str(series) in linkText:
-                    if all(word in linkText for word in rules):
+                if ambiSearch:
+                    if seriesStr in linkText:
+                        if all(word in linkText for word in rules):
+                            downloadLink = link.get('href')
+                            downloadurl = baseURL + downloadLink
+                            downloadHTML = self.getHTML(downloadurl, self.header)
+                            return self.parseDownloadPage(downloadHTML)
+                else:
+                    if linkName in linkText:
                         downloadLink = link.get('href')
                         downloadurl = baseURL + downloadLink
                         downloadHTML = self.getHTML(downloadurl, self.header)
@@ -83,7 +99,6 @@ class TorrentDownload():
         if r.status_code == 200:
             r.raw.decode_content = True
             filepath = torrentSavingPath + name + '/'
-            print(filepath)
             if not os.path.exists(filepath):
                 os.mkdir(filepath)
             with open(filepath + filename, 'wb') as f:
