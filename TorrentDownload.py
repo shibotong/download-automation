@@ -30,10 +30,6 @@ class TorrentDownload():
         ambiSearch = False
         if 'ambiSearch' in item:
             ambiSearch = item['ambiSearch']
-        # create a dir if not exist
-        filepath = "./" + seriesName + '/'
-        if not os.path.exists(filepath):
-            os.makedirs(seriesName)
 
         torrentLink = self.getDownloadLink(seriesLink, rules, currentDownload, ambiSearch)
         if torrentLink is not None:

@@ -24,7 +24,6 @@ def main(sc, dateTime):
             while True:
                 torrentURL = td.downloadSeries(item)
                 download = Aria.addTorrentToAria2(torrentURL)
-                print('Add ' + item['name'] + ' ' + str(item['series']) + ' to queue')
                 name = item['name']
                 season = item['season']
                 series = item['series']
@@ -32,6 +31,7 @@ def main(sc, dateTime):
                 if 'number' in item:
                     number = item['number']
                 icon = item['icon']
+                print(f'Downloading {name} Season {season} Series {series}')
                 
                 downloadItem = AutoDownloads(name, season, series, number, download, icon)
                 downloadItems.append(downloadItem)
@@ -39,6 +39,7 @@ def main(sc, dateTime):
                 if 'number' in item:
                     item['number'] += 1
         except Exception as error:
+            log(error)
             pass
     downloadFile.close()
     with open(downloadRuleURL, "w") as outfile:

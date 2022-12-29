@@ -12,9 +12,7 @@ aria2 = aria2p.API(
 def addTorrentToAria2(pathOfTorrent):
     # add downloads
     try:
-        print(pathOfTorrent)
         download = aria2.add_torrent(pathOfTorrent)
-        print("added to aria2 " + pathOfTorrent)
         return download
     except Exception as e:
         raise e
