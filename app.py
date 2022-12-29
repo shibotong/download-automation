@@ -1,7 +1,7 @@
 import TorrentDownload
 from AutoDownloads import AutoDownloads
-from utility import downloadRuleURL, period
-from datetime import date
+from utility import downloadRuleURL, period, log
+from datetime import date, timedelta
 import Aria
 import json
 import sched, time
@@ -11,15 +11,19 @@ td = TorrentDownload.TorrentDownload()
 
 downloadItems = []
 
-def main(sc):
+def main(sc, dateTime):
     downloadFile = open(downloadRuleURL)
     seriesItem = json.load(downloadFile)
+
+    today = date.today()
+    if today != dateTime:
+        print('-------' + str(today) + '--------')       
+
     for item in seriesItem:
         try:
             torrentURL = td.downloadSeries(item)
             download = Aria.addTorrentToAria2(torrentURL)
-            print('-------' + str(date.today()) + '--------')
-            print('Add' + item['name'] + ' ' + str(item['series']) + ' to queue')
+            print('Add ' + item['name'] + ' ' + str(item['series']) + ' to queue')
             name = item['name']
             season = item['season']
             series = item['series']
@@ -34,14 +38,13 @@ def main(sc):
             if 'number' in item:
                 item['number'] += 1
         except Exception as error:
-            # print(error)
             pass
     downloadFile.close()
     with open(downloadRuleURL, "w") as outfile:
         json.dump(seriesItem, outfile)
 
     checkDownloads()
-    sc.enter(period, 1, main, (sc, ))
+    sc.enter(period, 1, main, (sc,today))
 
 def checkDownloads():
     for downloadItem in downloadItems:
@@ -52,5 +55,6 @@ def checkDownloads():
 
 
 if __name__ == "__main__":
-    s.enter(0, 1, main, (s, ))
+    yesterday =  date.today() - timedelta(days=1)
+    s.enter(0, 1, main, (s, yesterday))
     s.run()
