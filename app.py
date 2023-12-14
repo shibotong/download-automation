@@ -1,6 +1,6 @@
 import TorrentDownload
 from AutoDownloads import AutoDownloads
-from utility import downloadRuleURL, period, log
+from utility import downloadRuleURL, period, log, debug
 from datetime import datetime, date, timedelta
 import Aria
 import json
@@ -41,8 +41,8 @@ def main(sc, dateTime):
             log(error)
             pass
     downloadFile.close()
-    with open(downloadRuleURL, "w") as outfile:
-        json.dump(seriesItem, outfile)
+    with open(downloadRuleURL, "w", encoding="utf-8") as outfile:
+        json.dump(seriesItem, outfile, ensure_ascii=False)
 
     checkDownloads()
     sc.enter(period, 1, main, (sc,today))
@@ -59,7 +59,6 @@ if __name__ == "__main__":
     yesterday =  date.today() - timedelta(days=1)
     today = date.today()
     print("Starting....")
-    print(yesterday)
-    print(today)
+    print(f"debug mode: {debug}")
     s.enter(0, 1, main, (s, yesterday))
     s.run()
