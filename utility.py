@@ -16,9 +16,6 @@ if debug:
 # Recursive Period (seconds)
 period = 3600
 
-# Aria2 hosting server
-host = os.environ.get("url", "http://192.168.4.35")
-
 # Download Rules
 downloadRuleURL = basePath + 'configs/downloadRule.json'
 configs = basePath + 'configs/configuration.json'
@@ -32,6 +29,7 @@ except:
 configurations = json.load(configFile)
 baseURL = configurations['url']
 token = configurations['token']
+host = configurations['host']
 
 def log(message):
     if debug:
