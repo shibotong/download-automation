@@ -24,7 +24,7 @@ class TorrentDownload():
 
     def downloadSeries(self, item):
         seriesName = item['name']
-        seriesLink = baseURL + item['link']
+        seriesLink = item['link']
         currentDownload = item['series']
         rules = item['rule']
         ambiSearch = False
