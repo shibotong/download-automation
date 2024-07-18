@@ -31,7 +31,7 @@ class TorrentDownload():
         if 'ambiSearch' in item:
             ambiSearch = item['ambiSearch']
 
-        torrentLink = self.getDownloadLink(seriesLink, rules, currentDownload, ambiSearch)
+        torrentLink = self.getDownloadLink1Lou(baseURL, seriesLink, rules, currentDownload, ambiSearch)
         if torrentLink is not None:
             try:
                 torrentPath = self.downloadTorrent(torrentLink, seriesName, currentDownload)
@@ -87,7 +87,37 @@ class TorrentDownload():
             if '本地下载' in i.get_text():
                 torrentLink = baseURL + i.get('href')
                 return torrentLink
+            
+    
+            
+    def getDownloadLink1Lou(self, baseurl, tailurl, rules, series, ambiSearch):
+        searchingURL = baseurl + tailurl
+        downloadtail = self.searchDownloadURL1Lou(searchingURL, rules, series, ambiSearch)
+        downloadurl = baseurl + downloadtail
+        return downloadurl
+    
+    def searchDownloadURL1Lou(self, link, rules, series, ambiSearch):
+        html = self.getHTML(link, self.header)
+        soup = BeautifulSoup(html, "html.parser")
 
+        # Get Link Name
+        seriesStr = str(series)
+        if series < 10:
+            seriesStr = "0" + seriesStr
+        linkName = rules[0] + seriesStr + rules[1]
+        for i in soup.find_all('ul', {'class': 'attachlist'}):
+            links = i('a')
+            for link in links:
+                linkText = link.get_text()
+                if ambiSearch:
+                    if seriesStr in linkText:
+                        if all(word in linkText for word in rules):
+                            downloadLink = link.get('href')
+                            return downloadLink
+                else:
+                    if linkName in linkText:
+                        downloadLink = link.get('href')
+                        return downloadLink
 
     def downloadTorrent(self, link, name, series):
         filename = name + "_" + str(series) + ".torrent"
