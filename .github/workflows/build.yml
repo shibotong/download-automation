@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build the Docker image
-        run: docker build -t shibotong/download-automation:v1.0.6 .
+        run: docker build -t shibotong/download-automation:v1.0.7 .
 
       - name: Push Docker image to Docker Hub
-        run: docker push shibotong/download-automation:v1.0.6
+        run: docker push shibotong/download-automation:v1.0.7
