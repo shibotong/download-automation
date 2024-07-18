@@ -1,6 +1,6 @@
 import TorrentDownload
 from AutoDownloads import AutoDownloads
-from utility import downloadRuleURL, period, log, debug
+from utility import downloadRuleURL, period, log
 from datetime import datetime, date, timedelta
 import Aria
 import json
