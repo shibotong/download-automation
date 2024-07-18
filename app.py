@@ -59,6 +59,5 @@ if __name__ == "__main__":
     yesterday =  date.today() - timedelta(days=1)
     today = date.today()
     print("Starting....")
-    print(f"debug mode: {debug}")
     s.enter(0, 1, main, (s, yesterday))
     s.run()
