@@ -2,7 +2,7 @@ import os
 import json
 
 debugString = os.environ.get("debug", "False")
-debug = debugString == "True"
+debug = True #debugString == "True"
 
 # Settings
 
