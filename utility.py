@@ -1,4 +1,5 @@
 import json
+import requests
 
 # Settings
 
@@ -25,6 +26,13 @@ host = configurations['host']
 
 def log(message):
     print(f"[DEBUG] {message}")
+
+def push_notification(title, message, icon):
+    server = 'https://api.day.app/'
+    endpoint = server + token
+    url = endpoint + '/' + title + '/' + message
+    parameter = {'icon': icon}
+    requests.get(url=url, params=parameter)
 
 class DownloadError(Exception):
     pass

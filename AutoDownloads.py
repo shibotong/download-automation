@@ -1,6 +1,6 @@
 import os
 import requests
-from utility import token
+from utility import token, push_notification
 
 class AutoDownloads():
 
@@ -28,14 +28,8 @@ class AutoDownloads():
                 os.rename(originalName, newName)
                 print(newName, 'success')
                 # send request if success
-                server = 'https://api.day.app/'
-                endpoint = server + token
-                title = self.name
-                description = "Season " + str(self.season) + " Episode " + str(self.series) + " added to library"
-                # parameter = {'pushkey': token, 'text': fileName + ' Added to Library'}
-                url = endpoint + '/' + title + '/' + description
-                parameter = {'icon': self.icon}
-                requests.get(url=url, params=parameter)
+                message = "Season " + str(self.season) + " Episode " + str(self.series) + " added to library"
+                push_notification(self.name, message, self.icon)
                 return True
             elif self.download.status == 'error':
                 return True
