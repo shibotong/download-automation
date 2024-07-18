@@ -12,7 +12,9 @@ jobs:
     steps:
       - name: echo username
         run: echo ${{ secrets.DOCKER_USERNAME }}
-        
+      - name: echo abc
+        run: echo abc
+
       - name: Checkout code
         uses: actions/checkout@v4
 
