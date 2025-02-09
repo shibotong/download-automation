@@ -4,7 +4,7 @@ import requests
 # Settings
 
 # Download base URL
-basePath = './downloads/'
+basePath = '/downloads/'
 
 # Recursive Period (seconds)
 period = 3600
