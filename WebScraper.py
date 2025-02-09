@@ -2,6 +2,7 @@ import requests
 import DownloadAutomationErrors
 from DownloadItem import DownloadItem
 from bs4 import BeautifulSoup
+from utility import log
 
 
 class WebScraper:
@@ -22,17 +23,13 @@ class WebScraper:
         return self.baseurl + url
 
     def fetchHTML(self, url, header) -> str:
-        try:
-            r = requests.get(url, headers=header)
-            r.raise_for_status()
-            return r.text
-        except:
-            raise DownloadAutomationErrors.HTMLFetchError("Failed to fetch HTML")
+        r = requests.get(url, headers=header)
+        r.raise_for_status()
+        return r.text
 
 
     def searchTorrentURL(self, html, rules, series, isAmbisearch) -> str:
         soup = BeautifulSoup(html, "html.parser")
-
         # Get Link Name
         seriesStr = str(series)
         if series < 10:
@@ -50,4 +47,5 @@ class WebScraper:
                 else:
                     if linkName in linkText:
                         downloadLink = link.get('href')
-                        return self.fullURL(downloadLink)
+                        return self.fullURL(str(downloadLink))
+        raise DownloadAutomationErrors.TorrentNotFoundError("Torrent not found")

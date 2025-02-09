@@ -4,7 +4,7 @@ import requests
 # Settings
 
 # Download base URL
-basePath = '/downloads/'
+basePath = './downloads/'
 
 # Recursive Period (seconds)
 period = 3600
@@ -17,7 +17,7 @@ torrentSavingPath = basePath + 'Torrents/'
 try:
     configFile = open(configs)
 except:
-    print("Configuration file not found")
+    print(f'Configuration file not found in {configs}')
     exit(1)
 configurations = json.load(configFile)
 baseURL = configurations['url']

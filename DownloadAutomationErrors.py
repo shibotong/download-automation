@@ -7,6 +7,9 @@ class ScraperError(DownloadAutomationError):
 class HTMLFetchError(ScraperError):
     pass
 
+class TorrentNotFoundError(ScraperError):
+    pass
+
 class DownloadError(Exception):
     pass
 

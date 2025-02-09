@@ -18,7 +18,6 @@ class TestTorrent(unittest.TestCase):
         self.assertEqual(url, "https://www.test.com/test")
 
 
-
     def test_decodingItem(self):
         json = {
             "name": "One Piece",

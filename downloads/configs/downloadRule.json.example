@@ -1,0 +1,14 @@
+[
+    {
+        "name": "NAME",
+        "link": "LINK",
+        "series": 1,
+        "season": 1,
+        "number": 1,
+        "rule": [
+            "[TEST RULE]"
+        ],
+        "ambiSearch": true,
+        "icon": "https://www.example.com/icon.png"
+    }
+]

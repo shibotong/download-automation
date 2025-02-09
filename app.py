@@ -6,9 +6,8 @@ import json
 import sched, time
 from DownloadItem import DownloadItem
 
-
-import WebScraper
-import TorrentDownloader
+from WebScraper import WebScraper
+from TorrentDownloader import TorrentDownloader
 
 s = sched.scheduler(time.time, time.sleep)
 ws = WebScraper(baseURL)
@@ -48,10 +47,12 @@ def main(sc, dateTime):
     sc.enter(period, 1, main, (sc,today))
 
 def downloadItem(item: DownloadItem):
-    torrentURL = ws.searchTorrentURL(item)
+    log("start downloading " + item.seriesName + " " + str(item.currentDownload))
+    torrentURL = ws.searchTorrentLink(item)
+    log(torrentURL)
     savedTorrentPath = tdr.download(item.seriesName, item.currentDownload, torrentURL)
     download = Aria.addTorrentToAria2(savedTorrentPath)
-    print(item.downloadingText())
+    log(item.downloadingText())
 
     downloadItem = AutoDownloads(item.seriesName, item.season, item.currentDownload, item.number, download, item.icon)
     downloadItems.append(downloadItem)
