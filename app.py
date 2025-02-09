@@ -5,6 +5,7 @@ from datetime import datetime, date, timedelta
 import Aria
 import json
 import sched, time
+from DownloadItem import DownloadItem
 
 s = sched.scheduler(time.time, time.sleep)
 td = TorrentDownload.TorrentDownload()
@@ -52,6 +53,9 @@ def main(sc, dateTime):
         pass
 
     sc.enter(period, 1, main, (sc,today))
+
+def downloadItem(item: DownloadItem):
+
 
 def checkDownloads():
     for downloadItem in downloadItems:

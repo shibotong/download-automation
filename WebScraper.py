@@ -1,5 +1,6 @@
 import requests
 import DownloadAutomationErrors
+from DownloadItem import DownloadItem
 from bs4 import BeautifulSoup
 
 
@@ -9,9 +10,9 @@ class WebScraper:
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
     }
 
-    def searchTorrentLink(self, baseurl, tailurl, rules, series, isAmbisearch) -> str:
-        html = self.fetchHTML(baseurl + tailurl, self.header)
-        return self.searchTorrentURL(html, rules, series, isAmbisearch)
+    def searchTorrentLink(self, baseurl: str, item: DownloadItem) -> str:
+        html = self.fetchHTML(baseurl + item.seriesLink, self.header)
+        return self.searchTorrentURL(html, item.rules, item.currentDownload, item.ambiSearch)
 
     def fetchHTML(self, url, header) -> str:
         try:

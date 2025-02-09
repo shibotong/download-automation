@@ -13,6 +13,7 @@ period = 3600
 downloadRuleURL = basePath + 'configs/downloadRule.json'
 configs = basePath + 'configs/configuration.json'
 torrentSavingPath = basePath + 'Torrents/'
+baseurl = 'https://www.1lou.me/'
 
 try:
     configFile = open(configs)

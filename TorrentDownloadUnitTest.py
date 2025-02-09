@@ -1,4 +1,5 @@
 import WebScraper
+import DownloadItem
 import unittest
 
 class TestTorrent(unittest.TestCase):
@@ -10,6 +11,21 @@ class TestTorrent(unittest.TestCase):
         series = 1111
         link = scraper.searchTorrentURL(html, rules, series, True)
         self.assertEqual(link, "https://unittest")
+
+    def test_decodingItem(self):
+        json = {
+            "name": "One Piece",
+            "link": "https://onepiece.com",
+            "series": 1111,
+            "rule": ["OPFans", "[1080P]"],
+            "ambiSearch": True
+        }
+        item = DownloadItem.DownloadItem(json)
+        self.assertEqual(item.seriesName, "One Piece")
+        self.assertEqual(item.seriesLink, "https://onepiece.com")
+        self.assertEqual(item.currentDownload, 1111)
+        self.assertEqual(item.rules, ["OPFans", "[1080P]"])
+        self.assertEqual(item.ambiSearch, True)
 
 if __name__ == '__main__':
     unittest.main()
