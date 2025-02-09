@@ -15,7 +15,7 @@ class TorrentDownloader:
     def download(self, name, series, link) -> str:
         filename = name + "_" + str(series) + ".torrent"
         r = requests.get(link, headers=self.header, stream=True)
-        log('downloading torrent' + r)
+        log(f'downloading torrent {r}')
         if r.status_code == 200:
             r.raw.decode_content = True
             filepath = self.torrentSavePath + name + '/'

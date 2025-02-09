@@ -1,5 +1,4 @@
 import os
-import requests
 from utility import token, push_notification
 
 class AutoDownloads():
