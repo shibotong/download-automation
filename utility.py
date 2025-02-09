@@ -34,5 +34,3 @@ def push_notification(title, message, icon):
     parameter = {'icon': icon}
     requests.get(url=url, params=parameter)
 
-class DownloadError(Exception):
-    pass
