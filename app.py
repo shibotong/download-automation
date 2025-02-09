@@ -1,16 +1,18 @@
-import TorrentDownload
 from AutoDownloads import AutoDownloads
-from utility import downloadRuleURL, period, log, push_notification
+from utility import downloadRuleURL, period, log, push_notification, baseURL, torrentSavingPath
 from datetime import datetime, date, timedelta
 import Aria
 import json
 import sched, time
 from DownloadItem import DownloadItem
-from WebScraper import WebScraper
+
+
+import WebScraper
+import TorrentDownloader
 
 s = sched.scheduler(time.time, time.sleep)
-td = TorrentDownload.TorrentDownload()
-ws = WebScraper()
+ws = WebScraper(baseURL)
+tdr = TorrentDownloader(torrentSavingPath)
 
 downloadItems = []
 
@@ -25,19 +27,8 @@ def main(sc, dateTime):
         for item in seriesItem:
             try:
                 while True:
-                    torrentURL = td.downloadSeries(item)
-                    download = Aria.addTorrentToAria2(torrentURL)
-                    name = item['name']
-                    season = item['season']
-                    series = item['series']
-                    number = 0
-                    if 'number' in item:
-                        number = item['number']
-                    icon = item['icon']
-                    print(f'Downloading {name} Season {season} Series {series}')
-                    
-                    downloadItem = AutoDownloads(name, season, series, number, download, icon)
-                    downloadItems.append(downloadItem)
+                    torrentItem = DownloadItem(item)
+                    downloadItem(torrentItem)
                     item['series'] += 1
                     if 'number' in item:
                         item['number'] += 1
@@ -57,7 +48,14 @@ def main(sc, dateTime):
     sc.enter(period, 1, main, (sc,today))
 
 def downloadItem(item: DownloadItem):
-    torrentURL = 
+    torrentURL = ws.searchTorrentURL(item)
+    savedTorrentPath = tdr.download(item.seriesName, item.currentDownload, torrentURL)
+    download = Aria.addTorrentToAria2(savedTorrentPath)
+    print(item.downloadingText())
+
+    downloadItem = AutoDownloads(item.seriesName, item.season, item.currentDownload, item.number, download, item.icon)
+    downloadItems.append(downloadItem)
+
 
 def checkDownloads():
     for downloadItem in downloadItems:

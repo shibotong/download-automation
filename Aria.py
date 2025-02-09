@@ -9,7 +9,7 @@ aria2 = aria2p.API(
     )
 )
 
-def addTorrentToAria2(pathOfTorrent):
+def addTorrentToAria2(pathOfTorrent) -> aria2p.Download:
     # add downloads
     try:
         download = aria2.add_torrent(pathOfTorrent)

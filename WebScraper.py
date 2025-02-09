@@ -46,8 +46,8 @@ class WebScraper:
                     if seriesStr in linkText:
                         if all(word in linkText for word in rules):
                             downloadLink = link.get('href')
-                            return downloadLink
+                            return self.fullURL(downloadLink)
                 else:
                     if linkName in linkText:
                         downloadLink = link.get('href')
-                        return downloadLink
+                        return self.fullURL(downloadLink)
