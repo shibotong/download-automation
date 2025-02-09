@@ -10,9 +10,16 @@ class WebScraper:
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
     }
 
-    def searchTorrentLink(self, baseurl: str, item: DownloadItem) -> str:
-        html = self.fetchHTML(baseurl + item.seriesLink, self.header)
+    def __init__(self, baseurl: str):
+        self.baseurl = baseurl
+
+    def searchTorrentLink(self, item: DownloadItem) -> str:
+        fullURL = self.fullURL(item.seriesLink)
+        html = self.fetchHTML(fullURL, self.header)
         return self.searchTorrentURL(html, item.rules, item.currentDownload, item.ambiSearch)
+    
+    def fullURL(self, url: str) -> str:
+        return self.baseurl + url
 
     def fetchHTML(self, url, header) -> str:
         try:

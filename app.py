@@ -6,9 +6,11 @@ import Aria
 import json
 import sched, time
 from DownloadItem import DownloadItem
+from WebScraper import WebScraper
 
 s = sched.scheduler(time.time, time.sleep)
 td = TorrentDownload.TorrentDownload()
+ws = WebScraper()
 
 downloadItems = []
 
@@ -55,7 +57,7 @@ def main(sc, dateTime):
     sc.enter(period, 1, main, (sc,today))
 
 def downloadItem(item: DownloadItem):
-
+    torrentURL = 
 
 def checkDownloads():
     for downloadItem in downloadItems:
