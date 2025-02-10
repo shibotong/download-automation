@@ -1,16 +1,17 @@
 import WebScraper
 import DownloadItem
+import FilePathController
 import unittest
 
 class TestTorrent(unittest.TestCase):
 
     def test_searchTorrentLink(self):
         scraper = WebScraper.WebScraper("https://www.test.com/")
-        html = "<ul class='attachlist'><a href='https://unittest'>OPFans 1111 [1080P]</a></ul>"
+        html = "<ul class='attachlist'><a href='abcdefg'>OPFans 1111 [1080P]</a></ul>"
         rules = ["OPFans", "[1080P]"]
         series = 1111
         link = scraper.searchTorrentURL(html, rules, series, True)
-        self.assertEqual(link, "https://unittest")
+        self.assertEqual(link, "https://www.test.com/abcdefg")
 
     def test_urlBuild(self):
         scraper = WebScraper.WebScraper("https://www.test.com/")
@@ -22,9 +23,11 @@ class TestTorrent(unittest.TestCase):
         json = {
             "name": "One Piece",
             "link": "https://onepiece.com",
+            "season": 1,
             "series": 1111,
             "rule": ["OPFans", "[1080P]"],
-            "ambiSearch": True
+            "ambiSearch": True,
+            "icon": "icon"
         }
         item = DownloadItem.DownloadItem(json)
         self.assertEqual(item.seriesName, "One Piece")
@@ -32,6 +35,15 @@ class TestTorrent(unittest.TestCase):
         self.assertEqual(item.currentDownload, 1111)
         self.assertEqual(item.rules, ["OPFans", "[1080P]"])
         self.assertEqual(item.ambiSearch, True)
+
+    def test_fileNewPath(self):
+        controller = FilePathController.FilePathController('/test/Anime/')
+        newPathNoNumber = controller.newPath("One Piece", 1, 1, 0, ".mkv")
+        self.assertEqual(newPathNoNumber, "/test/Anime/One Piece/Season 1/One Piece - S1E1.mkv")
+
+        newPathWithNumber = controller.newPath("One Piece", 1, 1, 1, ".mkv")
+        self.assertEqual(newPathWithNumber, "/test/Anime/One Piece/Season 1/One Piece - S1E1 - [1].mkv")
+
 
 if __name__ == '__main__':
     unittest.main()

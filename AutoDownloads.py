@@ -1,5 +1,8 @@
 import os
-from utility import token, push_notification
+from utility import push_notification, log, basePath
+import FilePathController
+
+controller = FilePathController.FilePathController(basePath + 'Anime/')
 
 class AutoDownloads():
 
@@ -16,14 +19,10 @@ class AutoDownloads():
         try:
             self.download.update()
             if self.download.status == 'complete':
+                log(self.download.name + ' success')
                 file, fileExtension = os.path.splitext(self.download.name)
                 originalName = str(self.download.dir) + '/' + str(self.download.name)
-                fileName = self.name + ' - S' + str(self.season)
-                if self.number != 0:
-                    fileName += 'E' + str(self.number) + ' - [' + str(self.series) + ']' + fileExtension
-                else:
-                    fileName += 'E' + str(self.series) + fileExtension
-                newName = str(self.download.dir) + '/Anime' + '/' + self.name + '/Season ' + str(self.season) + '/' + fileName
+                newName = controller.newPath(self.name, self.season, self.series, self.number, fileExtension)
                 os.rename(originalName, newName)
                 print(newName, 'success')
                 # send request if success

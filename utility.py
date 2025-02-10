@@ -7,7 +7,7 @@ import requests
 basePath = '/downloads/'
 
 # Recursive Period (seconds)
-period = 3600
+period = 7200
 
 # Download Rules
 downloadRuleURL = basePath + 'configs/downloadRule.json'
