@@ -4,10 +4,7 @@ import requests
 # Settings
 
 # Download base URL
-basePath = '/downloads/'
-
-# Recursive Period (seconds)
-period = 7200
+basePath = './downloads/'
 
 # Download Rules
 downloadRuleURL = basePath + 'configs/downloadRule.json'
@@ -23,6 +20,9 @@ configurations = json.load(configFile)
 baseURL = configurations['url']
 token = configurations['token']
 host = configurations['host']
+intervalHrs = configurations['interval']
+
+period = intervalHrs * 60 * 60
 
 def log(message):
     print(f"[DEBUG] {message}")
